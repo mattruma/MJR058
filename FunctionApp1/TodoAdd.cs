@@ -39,7 +39,7 @@ namespace FunctionApp1
                 };
 
             using var cn = new SqlConnection(
-                Environment.GetEnvironmentVariable("SQL_CONNECTION_STRING"));
+                Environment.GetEnvironmentVariable("SQL_CONNECTIONSTRING"));
             {
                 // await _tokenProvider.SetTokenAsync(cn);
 
