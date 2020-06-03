@@ -1,34 +1,31 @@
-using FunctionApp1.Data;
-using Microsoft.AspNetCore.Mvc;
+using FunctionApp2.Data;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace FunctionApp1
+namespace FunctionApp2
 {
     public static class TodoAdd
     {
-        // https://docs.microsoft.com/en-us/azure/azure-functions/manage-connections
-        // https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger?tabs=csharp
-
         [FunctionName(nameof(TodoAdd))]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "todos")] TodoAddOptions todoAddOptions,
-            ILogger log)
+        public async static Task Run(
+            [QueueTrigger("%QUEUESTORAGE_TODOADDQUEUENAME%", Connection = "QUEUESTORAGE_CONNECTIONSTRING")] TodoAddOptions todoAddOptions,
+            ILogger log,
+            [Queue("%QUEUESTORAGE_TODOADDEDQUEUENAME%", Connection = "QUEUESTORAGE_CONNECTIONSTRING")] IAsyncCollector<Todo> todoAysncCollector)
         {
             log.LogInformation($"{nameof(TodoAdd)} function processed a request.");
 
             if (string.IsNullOrWhiteSpace(todoAddOptions.Status))
             {
-                return new BadRequestObjectResult("'status' is required.");
+                throw new ValidationException("'status' is required.");
             }
 
             if (string.IsNullOrWhiteSpace(todoAddOptions.Description))
             {
-                return new BadRequestObjectResult("'description' is required.");
+                throw new ValidationException("'description' is required.");
             }
 
             var todo =
@@ -58,9 +55,9 @@ namespace FunctionApp1
 
                     await cmd.ExecuteNonQueryAsync();
                 }
-            }
 
-            return new OkObjectResult(todo);
+                await todoAysncCollector.AddAsync(todo);
+            }
         }
     }
 }
