@@ -1,4 +1,4 @@
-using FunctionApp1.Data;
+using ClassLibrary1;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

@@ -1,4 +1,4 @@
-using FunctionApp2.Data;
+using ClassLibrary1;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using System;
@@ -33,6 +33,7 @@ namespace FunctionApp2
                 {
                     Status = todoAddOptions.Status,
                     Description = todoAddOptions.Description,
+                    GitHubId = todoAddOptions.GitHubId,
                     DueOn = todoAddOptions.DueOn
                 };
 
@@ -49,6 +50,7 @@ namespace FunctionApp2
 
                     cmd.Parameters.AddWithValue("@Id", todo.Id);
                     cmd.Parameters.AddWithValue("@Status", todo.Status);
+                    cmd.Parameters.AddWithValue("@GitHubId", todo.GitHubId ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@Description", todo.Description);
                     cmd.Parameters.AddWithValue("@DueOn", todo.DueOn ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@CreatedOn", todo.CreatedOn);
