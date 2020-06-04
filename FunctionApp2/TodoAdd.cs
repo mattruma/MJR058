@@ -42,7 +42,7 @@ namespace FunctionApp2
             {
                 // await _tokenProvider.SetTokenAsync(cn);
 
-                var query = "INSERT INTO Todos VALUES (@Id, @Status, @Description, @DueOn, @CreatedOn)";
+                var query = "INSERT INTO Todos VALUES (@Id, @Status, @Description, @GitHubId, @DueOn, @CreatedOn)";
 
                 using var cmd = new SqlCommand(query, cn);
                 {
@@ -50,8 +50,8 @@ namespace FunctionApp2
 
                     cmd.Parameters.AddWithValue("@Id", todo.Id);
                     cmd.Parameters.AddWithValue("@Status", todo.Status);
-                    cmd.Parameters.AddWithValue("@GitHubId", todo.GitHubId ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@Description", todo.Description);
+                    cmd.Parameters.AddWithValue("@GitHubId", todo.GitHubId ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@DueOn", todo.DueOn ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@CreatedOn", todo.CreatedOn);
 
