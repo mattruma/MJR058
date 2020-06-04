@@ -22,7 +22,6 @@ namespace FunctionApp1
         {
             log.LogInformation($"{nameof(TodoList)} function processed a request.");
 
-
             if (!int.TryParse(req.Query["page"], out var page)) page = 1;
             if (!int.TryParse(req.Query["pageSize"], out var pageSize)) pageSize = 20;
 
