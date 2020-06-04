@@ -15,6 +15,8 @@ namespace ClassLibrary1
 
         public string GitHubId { get; set; }
 
+        public DateTime? CompletedOn { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public Todo()
@@ -38,6 +40,11 @@ namespace ClassLibrary1
             if (!sqlDataReader.IsDBNull(sqlDataReader.GetOrdinal("GitHubId")))
             {
                 this.GitHubId = sqlDataReader.GetString(sqlDataReader.GetOrdinal("GitHubId"));
+            }
+
+            if (!sqlDataReader.IsDBNull(sqlDataReader.GetOrdinal("CompletedOn")))
+            {
+                this.CompletedOn = sqlDataReader.GetDateTime(sqlDataReader.GetOrdinal("CompletedOn"));
             }
 
             this.CreatedOn = sqlDataReader.GetDateTime(sqlDataReader.GetOrdinal("CreatedOn"));
