@@ -25,6 +25,8 @@ namespace FunctionApp3
                 JsonConvert.DeserializeObject<IssueClosedOptions>(
                     await new StreamReader(req.Body).ReadToEndAsync());
 
+            log.LogInformation(JsonConvert.SerializeObject(issueClosedOptions, Formatting.Indented));
+
             if (issueClosedOptions.Action != "closed")
             {
                 return new OkResult();
